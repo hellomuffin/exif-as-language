@@ -1,7 +1,7 @@
 # exif-as-language
-This is the official repo for the paper "EXIF as Language: Learning Cross-Modal Associations Between Images and Camera Metadata".
+This is the official repo for the paper **"EXIF as Language: Learning Cross-Modal Associations Between Images and Camera Metadata"**.
 
-Chao Feng, Ziyang Chen, Andrew Owens
+*Chenhao Zheng, Ayush Shrivastava, Andrew Owens*
 
 University of Michigan, Ann Arbor
 
