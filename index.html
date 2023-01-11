@@ -1,0 +1,408 @@
+<script src="http://www.google.com/jsapi" type="text/javascript"></script> 
+<script type="text/javascript">google.load("jquery", "1.3.2");</script>
+
+<style type="text/css">
+	body {
+		font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+		font-weight:300;
+		font-size:18px;
+		margin-left: auto;
+		margin-right: auto;
+		width: 1100px;
+		background-color : #EFEFEF;
+	}
+	.content{
+    width : 1110px;
+    padding : 25px 50px;
+    margin : 25px auto;
+    background-color : #fff;
+    box-shadow: 0px 0px 10px #999;
+    border-radius: 15px; 
+	}
+	h1 {
+		font-weight:300;
+	}
+
+	.row {
+		display: flex;
+	  }
+	  
+	/* Create three equal columns that sits next to each other */
+	.column {
+	flex: 50%;
+	padding: 5px;
+	}
+
+    .imageDiv img { 
+        box-shadow: 1px 1px 10px rgb(255, 255, 255); 
+        margin: 2px;
+        max-height: 50px;
+        cursor: pointer;
+    display:inline-block;
+    *display:inline;
+    *zoom:1;
+    vertical-align:top;
+    }
+
+
+	tr.spaceUnder>td {
+		padding-bottom: 3em;
+	}
+
+	.paddingBetweenRows td
+	{
+		padding:0 15px;
+		border-spacing: 100px;
+	}
+
+
+
+
+
+    /*
+      Rollover Image
+     */
+	 .figure {
+        position: relative;
+        max-width: 100%;
+    }
+    .figure img.image-hover {
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      bottom: 0;
+      object-fit: contain;
+      opacity: 0;
+      transition: opacity .2s;
+    }
+    .figure:hover img.image-hover {
+      opacity: 1;
+    }
+	
+	* {box-sizing:border-box}
+
+	/* Slideshow container */
+	.slideshow-container {
+	max-width: 232;
+	position: relative;
+	margin: auto;
+	}
+
+	/* Hide the images by default */
+	.mySlides {
+	display: none;
+	}
+
+	/* Next & previous buttons */
+	.prev, .next {
+	cursor: pointer;
+	position: absolute;
+	top: 50%;
+	width: auto;
+	margin-top: -22px;
+	padding: 16px;
+	color: white;
+	font-weight: bold;
+	font-size: 18px;
+	transition: 0.6s ease;
+	border-radius: 0 3px 3px 0;
+	user-select: none;
+	}
+
+	/* Position the "next button" to the right */
+	.next {
+	right: 0;
+	border-radius: 3px 0 0 3px;
+	}
+
+	/* On hover, add a black background color with a little bit see-through */
+	.prev:hover, .next:hover {
+	background-color: rgba(0,0,0,0.8);
+	}
+
+	/* Caption text */
+	.text {
+	color: #f2f2f2;
+	font-size: 15px;
+	padding: 8px 12px;
+	position: absolute;
+	bottom: 8px;
+	width: 100%;
+	text-align: center;
+	}
+
+	/* Number text (1/3 etc) */
+	.numbertext {
+	color: #f2f2f2;
+	font-size: 12px;
+	padding: 8px 12px;
+	position: absolute;
+	top: 0;
+	}
+
+	/* The dots/bullets/indicators */
+	.dot {
+	cursor: pointer;
+	height: 15px;
+	width: 15px;
+	margin: 0 2px;
+	background-color: #bbb;
+	border-radius: 50%;
+	display: inline-block;
+	transition: background-color 0.6s ease;
+	}
+
+	.active, .dot:hover {
+	background-color: #717171;
+	}
+
+	/* Fading animation */
+	.fade {
+	}
+
+	@keyframes fade {
+	from {opacity: .4}
+	to {opacity: 1}
+	}
+
+
+
+
+	.disclaimerbox {
+		background-color: #eee;		
+		border: 1px solid #eeeeee;
+		border-radius: 10px ;
+		-moz-border-radius: 10px ;
+		-webkit-border-radius: 10px ;
+		padding: 20px;
+	}
+
+	video.header-vid {
+		height: 140px;
+		border: 1px solid black;
+		border-radius: 10px ;
+		-moz-border-radius: 10px ;
+		-webkit-border-radius: 10px ;
+	}
+	
+	img.header-img {
+		height: 140px;
+		border: 1px solid black;
+		border-radius: 10px ;
+		-moz-border-radius: 10px ;
+		-webkit-border-radius: 10px ;
+	}
+	
+	img.rounded {
+		border: 1px solid #eeeeee;
+		border-radius: 10px ;
+		-moz-border-radius: 10px ;
+		-webkit-border-radius: 10px ;
+	}
+	
+	a:link,a:visited
+	{
+		color: #1367a7;
+		text-decoration: none;
+	}
+	a:hover {
+		color: #208799;
+	}
+	
+	td.dl-link {
+		height: 160px;
+		text-align: center;
+		font-size: 22px;
+	}
+	
+	.layered-paper-big { /* modified from: http://css-tricks.com/snippets/css/layered-paper/ */
+		box-shadow:
+		        0px 0px 1px 1px rgba(0,0,0,0.35), /* The top layer shadow */
+		        5px 5px 0 0px #fff, /* The second layer */
+		        5px 5px 1px 1px rgba(0,0,0,0.35), /* The second layer shadow */
+		        10px 10px 0 0px #fff, /* The third layer */
+		        10px 10px 1px 1px rgba(0,0,0,0.35), /* The third layer shadow */
+		        15px 15px 0 0px #fff, /* The fourth layer */
+		        15px 15px 1px 1px rgba(0,0,0,0.35), /* The fourth layer shadow */
+		        20px 20px 0 0px #fff, /* The fifth layer */
+		        20px 20px 1px 1px rgba(0,0,0,0.35), /* The fifth layer shadow */
+		        25px 25px 0 0px #fff, /* The fifth layer */
+		        25px 25px 1px 1px rgba(0,0,0,0.35); /* The fifth layer shadow */
+		margin-left: 10px;
+		margin-right: 45px;
+	}
+
+	.paper-big { /* modified from: http://css-tricks.com/snippets/css/layered-paper/ */
+		box-shadow:
+		        0px 0px 1px 1px rgba(0,0,0,0.35); /* The top layer shadow */
+
+		margin-left: 10px;
+		margin-right: 45px;
+	}
+
+
+	.layered-paper { /* modified from: http://css-tricks.com/snippets/css/layered-paper/ */
+		box-shadow:
+		        0px 0px 1px 1px rgba(0,0,0,0.35), /* The top layer shadow */
+		        5px 5px 0 0px #fff, /* The second layer */
+		        5px 5px 1px 1px rgba(0,0,0,0.35), /* The second layer shadow */
+		        10px 10px 0 0px #fff, /* The third layer */
+		        10px 10px 1px 1px rgba(0,0,0,0.35); /* The third layer shadow */
+		margin-top: 5px;
+		margin-left: 10px;
+		margin-right: 30px;
+		margin-bottom: 5px;
+	}
+	
+	.vert-cent {
+		position: relative;
+	    top: 50%;
+	    transform: translateY(-50%);
+	}
+	
+	hr
+	{
+		border: 0;
+		height: 1px;
+		background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+	}
+
+	table {
+		border-collapse: collapse;
+	}
+	.vtable {
+		border-collapse:separate;
+		border-spacing:10px 15px;
+	}
+	.rtable {
+		margin-left: 2em;
+		border-collapse:separate;
+		border-spacing:10px 15px;
+	}
+</style>
+
+<html>
+  <head>
+		<title>EXIF as language</title>
+		<meta property="og:title" content="EXIF as language" />
+  </head>
+
+  <body>
+	<div class="content">
+		<br>
+          <center>
+          	<span style="font-size:36px">EXIF as Language: Learning Cross-Modal Associations Between Images and Photo Metadata</span>
+			<br><br>
+	  		  <table align=center width=700px>
+	  			  <tr>
+	  	              <td align=center width=200px>
+	  					<center><span style="font-size:20px"><a href="">Chenhao Zheng</a></span></center>
+		  		  	  </td>
+	  	              <td align=center width=200px>
+	  					<center><span style="font-size:20px"><a href="https://www.ayshrv.com/">Ayush Shrivastava</a></span>	</center>
+		  		  	  </td>
+					  <td align=center width=200px>
+						<center><span style="font-size:20px"><a href="https://andrewowens.com/">Andrew Owens</a></span></center>
+					  </td>
+
+			  </table>
+			<!-- <br>
+          		<span style="font-size:20px"> NeurIPS 2022 Datasets and Benchmarks</span> -->
+			<br><br>
+	  		  <table align=center width=650px>
+	  			  <tr>
+	  	              <td align=center width=150px>
+	  					<center>
+							<span style="font-size:20px"><a href=''> [Paper]</a></span>
+							&nbsp&nbsp&nbsp&nbsp&nbsp
+	  						<!-- <span style="font-size:20px"><a href='https://drive.google.com/drive/folders/1NDasyshDCL9aaQzxjn_-Q5MBURRT360B'> [Dataset]</a></span>
+							  &nbsp&nbsp&nbsp&nbsp&nbsp
+	  						<span style="font-size:20px"><a href='https://github.com/fredfyyang/Tactile-Driven-Image-Stylization/'> [Code]</a></span> -->
+		  		  		</center>
+		  		  	  </td>
+	  			  <tr>
+			  </table>
+          </center>
+		  <p><strong>Quick Jump:</strong></p>
+			<ol>
+				<li><a href="#overview">Overview</a></li>
+				<li><a href="#training">Cross-modal Training</a></li>
+				<li><a href="#applications">Applications</a></li>
+				<li><a href="#result">Qualitative Result</a></li>
+			</ol>
+	</div>
+    
+
+	<div class="content" id="overview">
+		<table align=center width=850px>
+			<center><h1>Overview</h1></center>
+		</table>
+
+
+		<div class="row">
+
+			<img id="human_collect" src='./image/firstpage_v3.png'  height="250"/>
+		</div>
+		<center><h3></h3></center>
+		In this paper, we learn visual representations that convey camera properties by creating a joint embedding between image patches and photo metadata. This model treats metadata as a language-like modality: it converts EXIF tags that compose the metadata into a long piece of text, 
+		and processes it using an off-the-shelf model from natural language processing. We demonstrate the effectiveness of our learned features on a variety of downstream tasks that require an understanding of low-level imaging properties, where it outperforms other feature representations. 
+		In particular, we successfully apply our model to the problem of detecting image splices "zero shot", by clustering the crossmodal embeddings within an image.
+		
+
+		
+	</div>
+
+	<div class="content" id="training">
+		<center><h1>Cross-modal Training</h3></center>
+			Photo metadata for each image (EXIF file) is a freely available but often ignored signal that can be used to learn camera property from images. We propose to treat EXIF tags as language and use multimodal contrative learning techniques to associate images with their metadata.
+			<h3></h3>
+			<div class="row">
+
+				<div class="column" style="padding-left:50px">
+					<img  src='./image/exif_table.png'  height="250"/>
+					<br>
+					<br>
+					<span style="font-size:16px"><i>&nbsp&nbsp&nbsp&nbsp&nbsp Common EXIF tags and example values</i>	
+				</div>
+				<div class="column" style="padding-right:50px">	
+					<img  src='./image/method_v2.png' height="250"/>
+					<br>
+					<br>
+					<span style="font-size:16px"><i> Cross-modal image and photo metadata training</i>
+				</div>
+			</div>
+	</div>	  
+
+	<div class="content" id="applications">
+		<center><h1>Application on image forensics</h3></center>
+			After learning cross-modal representations from images and photo metadata, we can use them for various downstream tasks that require an understanding of camera properties. Here we use application in image forensics as an example.
+		<h3></h3>
+			<center><img id="human_collect" src='./image/forensics_v2.png'  height="250"/><center>
+	</div>
+
+
+
+
+	
+	<div class="content" id="result">
+  		  <center><h1>Qualitative Result</h1></center>
+		  
+			<center><img id="huww" src='./image/our_forensic.png'  width="1000"/><center>
+	</div>
+		
+		
+			
+	<div class="content" id="acknowledgements">
+		<center><h1>Acknowledgements</h1></center>
+		We thank Ziyang Chen, Yuexi Du for the helpful discussions. 
+		The webpage template was adopted from <a href="http://richzhang.github.io/colorization/">Colorization</a> project and <a href="http://www.cs.columbia.edu/~vondrick/ihog/">HOGgles</a> project.
+	</div>
+		<hr>
+		<br><br><br>
+		<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms" href="http://purl.org/dc/dcmitype/MovingImage" property="dct:title" rel="dct:type">This paper is licensed under a <a rel=“license” href=“http://creativecommons.org/licenses/by/4.0/”>Creative Commons Attribution 4.0 International License</a>
+	
+              
+</body>
+</html>
+ 
