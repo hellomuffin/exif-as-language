@@ -1,6 +1,6 @@
 <br />
 <p align="center">
-  <h5 align="center">This is the official repo for the paper "EXIF as Language: Learning Cross-Modal Associations Between Images and Camera Metadata".</h5>
+  <h54align="center">This is the official repo for the paper "EXIF as Language: Learning Cross-Modal Associations Between Images and Camera Metadata".</h4>
 
   <p align="center">  
     <a href="https://arxiv.org/abs/2301.04647">Paper</a>
