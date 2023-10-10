@@ -34,10 +34,24 @@ If you want to train models by your own, we recommand also install pytorch_warmu
 
 
 ## Training a new model
-If you wsh to train your own model you must do the following things:
+If you wish to train your own model,  you can follow the following things:
 
 #### Prepare a set of image-exif pairs from some image-text dataset
 EXIF information is a metadata file injected in the photo at the moment of capture. Some social media platform will remove the EXIF data in the user uploaded photos for privacy protection. Therefore, instead of extracting EXIF data directly from photos, we recommand using pubic datasets in which EXIF information for every image is provided, such as  [LAION](https://laion.ai/blog/laion-400-open-dataset/) and [YFCC](https://paperswithcode.com/dataset/yfcc100m) dataset.
+
+For example, to download YFCC dataset, first get the dataset metadata from:
+
+`s3cmd get --recursive s3://mmcommons `
+
+Then download images based on metadata:
+
+`python dataProcess/download_image.py --target_folder </path/to/target/folder> --metadata_folder </path/to/metadata/folder> --sample_size <integer>`
+
+Finally downloading EXIF info 
+
+`python yfcc_dataInfo.py --img_folder_path </path/to/image/folder> --metadata_path <path/to/exif/data/path>`
+
+
 
 #### Write pytorch dataset code
 After downloading the data, you will need to write a customized pytorch dataset code for training. We give an example of dataset class on `data.py`.
@@ -46,7 +60,7 @@ After downloading the data, you will need to write a customized pytorch dataset 
 Now you can formally start training. 
 
 
-`python train.py --save_model_path your/checkpoint/path --batch_size 1024 --num_epochs 100`
+`python train.py --save_model_path your/checkpoint/path --batch_size <batch_size> --num_epochs <num_epoch>`
 
 
 add `--multi_gpu` in the case of distributed gpus training. We recommand using [WandB](https://wandb.ai/site) to track the statistics while training, such as loss, gradient, etc. To use it, simple add `--logWandb`.
@@ -58,6 +72,8 @@ We provide evaluation code on various forensics datasets, including CASIA, Colum
 `python splice_evaluator.py --ckpt_path /your-pretrained-model-path --result_dir result --data_name in_the_wild --data_base_path /your-eval-data-root-path`
 
 where data_name specify which dataset you want to run, and can be choose from `['in_the_wild', 'columbia', 'dso_1', 'realistic_tampering', 'scene_completion', 'casia_1', 'casia_2']`. After evaluating, the similarity heatmap for each image will be placed on `result/` and the evaluating score will be displayed via standard output.
+
+The released checkpoint performance can be found [here](eval/pf.md).
 
 
 <!-- ACKNOWLEDGEMENTS -->

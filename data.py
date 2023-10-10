@@ -26,24 +26,32 @@ def preprocess(image: torch.Tensor, res):
 
 
 class ExampleDataset(Dataset):
-    def __init__(self, root_path, resolution=224):
+    def __init__(self, root_path, tag_threshold=0.49, resolution=124, ):
         super().__init__()
-        self.image_paths = glob.glob(f"{root_path}/*.png")
+        self.exif_paths = glob.glob(f"{root_path}/*.json")
+        
         self.resolution = resolution
         print("dataset length: ", len(self))
+        
+        with open('dataProcess/all_exif_count.json', 'r') as file:
+            all_exif_count = json.load(file)
+            self.filtered_keys = [key for key, value in all_exif_count.items() if value >= tag_threshold]
     
     def __len__(self):
         return len(self.image_paths)
     
     
     def get_possible_item(self, index):
-        imagepath = self.image_paths[index]
+        imagepath = self.exif_paths[index].replace('json', 'png')  # or jpg. depending on downlaoded format
         image = Image.open(imagepath)
         image = preprocess(image, self.resolution)
 
-        with open(imagepath.replace('png', 'txt')) as f:
-            exif_str = json.load(f)['exif']
-            
+        with open(self.exif_paths[index]) as f:
+            exif_dict = json.load(f)['exif']
+            filtered_exif_dict = {}
+            for k, v in exif_dict.items():
+                if k in self.filtered_keys: filtered_exif_dict[k] = v
+            exif_str = ", ".join([f"{key}: {value}" for key, value in filtered_exif_dict.items()])
         example = {
             "imgpath": imagepath, 
             "image": image, 

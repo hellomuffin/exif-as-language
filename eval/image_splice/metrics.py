@@ -72,3 +72,46 @@ class MCC_Metric(LocalizationMetric):
 class AUC_Metric(LocalizationMetric):
     def __init__(self):
         super().__init__(roc_auc_score)
+        
+        
+class cIoU_Metric():
+    def __init__(self):
+        self.scores = []
+    
+    def update(self, label_map, score_map):
+        ciou = self._compute_cIoU(label_map, score_map)
+        # consider the inverted map
+        ciou_inverse = self._compute_cIoU(label_map, 1-score_map)
+        self.scores.append(max(ciou, ciou_inverse))
+        
+    
+    def _compute_cIoU(self, label_map, score_map):
+        thresholds = np.linspace(0, 1, 1000)
+        thresholded_pred_masks = score_map[:, :, None] >= thresholds[None, None, :]
+
+        # Compute IoU for positive class
+        intersection_positive = np.logical_and(thresholded_pred_masks, label_map[:, :, None])
+        union_positive = np.logical_or(thresholded_pred_masks, label_map[:, :, None])
+        iou_positive = np.sum(intersection_positive, axis=(0, 1)) / np.sum(union_positive, axis=(0, 1))
+        
+        # Compute IoU for negative class
+        intersection_negative = np.logical_and(~thresholded_pred_masks, ~label_map[:, :, None])
+        union_negative = np.logical_or(~thresholded_pred_masks, ~label_map[:, :, None])
+        iou_negative = np.sum(intersection_negative, axis=(0, 1)) / np.sum(union_negative, axis=(0, 1))
+        
+        # # Compute class-balanced IoU
+
+        best_threshold_index = np.argmax(iou_positive)
+        best_threshold = thresholds[best_threshold_index]
+        best_iou_positives = iou_positive[best_threshold_index]
+        
+        best_threshold_index = np.argmax(iou_negative)
+        best_threshold = thresholds[best_threshold_index]
+        best_iou_negatives = iou_negative[best_threshold_index]
+        
+        best_iou = (best_iou_positives + best_iou_negatives) / 2
+        
+        return best_iou
+
+    def compute(self):
+        return sum(self.scores) / len(self.scores)
