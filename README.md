@@ -121,10 +121,11 @@ Distributed under the MIT License. See `LICENSE` for more information.
 If you found this repository useful, please consider citing:
 
 ```bibtex
-@article{zheng2023exif,
+@inproceedings{zheng2023exif,
   title={EXIF as Language: Learning Cross-Modal Associations Between Images and Camera Metadata},
   author={Zheng, Chenhao and Shrivastava, Ayush and Owens, Andrew},
-  journal={arXiv preprint arXiv:2301.04647},
+  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+  pages={6945--6956},
   year={2023}
 }
 ```

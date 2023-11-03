@@ -21,6 +21,7 @@ from datasets.realistic_tampering import RealisticTamperingDataset
 from datasets.scene_completion import SceneCompletionDataset
 from datasets.casia_2 import CASIA_2_Dataset
 from datasets.casia_1 import CASIA_1_Dataset
+from datasets.general import GeneralDataset
 
 
 DEVICE = "cuda:0" if torch.cuda.is_available() else "cpu"
@@ -78,11 +79,7 @@ class Evaluator:
                 Area under the Receiving Operating Characteristic Curve, for localization
         """
         
-        metric_classes = {
-            "mAP": mAP_Metric(),
-            "cIoU": cIoU_Metric(),
-        }
-
+        metric_classes = {"mAP": mAP_Metric()}
 
         for i in tqdm(range(len(self.dataset))):
             data = self.dataset[i]
@@ -141,9 +138,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--ckpt_path", default="your/pretrained/model/path")
     parser.add_argument("--result_dir", default="results")
-    parser.add_argument("--data_name", default="in_the_wild")
-    parser.add_argument("--data_base_path", default="/scratch/ahowens_root/ahowens1/neymar/test_dataset")
+    parser.add_argument("--dataset", default="in_the_wild")
+    parser.add_argument("--dataset_base_path", default="/scratch/ahowens_root/ahowens1/neymar/test_dataset")
     parser.add_argument("--patch_size", type=int, default=124)
+    parser.add_argument("--splice_only", default=False, action='store_true')
     parser.add_argument("--num_per_dim", type=int, default=25)
     args = parser.parse_args()
     
@@ -152,14 +150,14 @@ if __name__ == "__main__":
     print("[load wrapper model]")
     model, _ = load_wrapper_model(device=DEVICE, state_dict_path=args.ckpt_path, model_name="RN50", input_resolution=args.patch_size)
 
-    
-    if args.dataset == "in_the_wild": dataset = InTheWildDataset(root_dir=args.dataset_base_path)
-    elif args.dataset == 'columbia': dataset = ColumbiaDataset(root_dir=args.dataset_base_path, spliced_only=False)
-    elif args.dataset == "dso_1": dataset = DSO_1_Dataset(root_dir=args.dataset_base_path, spliced_only=False)
-    elif args.dataset == 'realistic_tampering': dataset = RealisticTamperingDataset(root_dir=args.dataset_base_path)
-    elif args.dataset == 'scene_completion': dataset = SceneCompletionDataset(root_dir=args.dataset_base_path)
-    elif args.dataset == 'casia_2': dataset = CASIA_2_Dataset(root_dir=args.dataset_base_path)
-    elif args.dataset == 'casia_1': dataset = CASIA_1_Dataset(root_dir=args.dataset_base_path)
+    dataset_base_path = os.path.join(args.dataset_base_path, args.dataset)
+    if args.dataset == "in_the_wild": dataset = InTheWildDataset(root_dir=dataset_base_path)
+    elif args.dataset == 'columbia': dataset = ColumbiaDataset(root_dir=dataset_base_path, spliced_only=args.splice_only)
+    elif args.dataset == "dso_1": dataset = DSO_1_Dataset(root_dir=args.dataset_base_path, spliced_only=args.splice_only)
+    elif args.dataset == 'realistic_tampering': dataset = RealisticTamperingDataset(root_dir=dataset_base_path)
+    elif args.dataset == 'scene_completion': dataset = SceneCompletionDataset(root_dir=dataset_base_path)
+    elif args.dataset == 'casia_2': dataset = CASIA_2_Dataset(root_dir=dataset_base_path)
+    elif args.dataset == 'casia_1': dataset = CASIA_1_Dataset(root_dir=dataset_base_path)
     else: raise NotImplementedError
     
 

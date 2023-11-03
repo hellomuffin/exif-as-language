@@ -6,7 +6,6 @@ from transformers import DistilBertModel, DistilBertConfig
 from transformers import AlbertModel, AlbertConfig
 from transformers import RobertaModel,RobertaConfig
 from torchvision.models import resnet50
-from vit_pytorch import ViT
 import torch.nn as nn
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
@@ -20,8 +19,6 @@ class EXIFNet(torch.nn.Module):
         del self.model.visual
         del self.model.transformer
         if visual=="RN50": image_encoder = resnet50(pretrained=True)
-        elif visual=='ViT': image_encoder = ViT(image_size = resolution, patch_size = 32, num_classes = 768, dim = 1024, 
-                                  depth = 6, heads = 16, mlp_dim = 2048, dropout = 0.1, emb_dropout = 0.1)
         else: raise NotImplementedError
         image_encoder.fc = torch.nn.Linear(2048, 768)
         self.model.visual = image_encoder

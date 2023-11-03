@@ -86,6 +86,7 @@ class cIoU_Metric():
         
     
     def _compute_cIoU(self, label_map, score_map):
+        label_map = label_map.numpy()
         thresholds = np.linspace(0, 1, 1000)
         thresholded_pred_masks = score_map[:, :, None] >= thresholds[None, None, :]
 
